@@ -82,6 +82,8 @@ public class UserDetailController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         loadData();
         searchTable();
+
+        String value = emailTextField.getText();
     }
 
     private void loadData() {

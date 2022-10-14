@@ -188,7 +188,7 @@ public class CategoryDetailController implements Initializable {
     void addMenu(ActionEvent event) {
 
         clearLabels();
-        if (menuValidation()) {
+        if (categoryValidation()) {
             Category category = new Category();
             CategoryService categoryService = new CategoryService();
 
@@ -218,7 +218,7 @@ public class CategoryDetailController implements Initializable {
     @FXML
     void updateMenu(ActionEvent event) {
         clearLabels();
-        if (menuValidation()) {
+        if (categoryValidation()) {
             Category category = new Category();
             CategoryService categoryService = new CategoryService();
 
@@ -306,7 +306,7 @@ public class CategoryDetailController implements Initializable {
         categoryImageLabel.setText("");
     }
 
-    private boolean menuValidation() {
+    private boolean categoryValidation() {
 
 
         return DataValidation.TextFieldNotEmpty(nameTextField.getText())
