@@ -33,6 +33,15 @@ public class AlertPopUp {
         msg.showAndWait();
 
     }
+
+    public static void customErrorPopup(String title, String content) {
+        Alert msg = new Alert(Alert.AlertType.ERROR);
+        msg.setTitle(title);
+        msg.setHeaderText(null);
+        msg.setContentText(content);
+        msg.showAndWait();
+    }
+
     public static void insertSuccesfully(String text) {
         Alert msg = new Alert(Alert.AlertType.INFORMATION);
         msg.setTitle("Successfull..");

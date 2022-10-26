@@ -30,6 +30,11 @@ public class Category {
         this.cAvailability = cAvailability;
     }
 
+    @Override
+    public String toString() {
+        return this.getcName();
+    }
+
     public String getcID() {
         return cID;
     }

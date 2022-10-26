@@ -5,7 +5,7 @@ import bean.User;
 import service.UserService;
 
 public class UserAuthentication {
-    private static User AuthenticatedUser = null;
+    private static User AuthenticatedUser = new User();
 
     public static User getAuthenticatedUser() {
         return AuthenticatedUser;

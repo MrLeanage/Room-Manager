@@ -24,7 +24,7 @@ public class CategoryService {
         connection = DBConnection.getDBConnection();
     }
 
-    public ObservableList<Category> loadAllMenuData() {
+    public ObservableList<Category> loadAllCategoryData() {
         ObservableList<Category> categoryObservableList = FXCollections.observableArrayList();
         try {
             ResultSet resultSet = connection.createStatement().executeQuery(CategoryQuery.LOAD_ALL_CATEGORY_DATA);
@@ -55,7 +55,7 @@ public class CategoryService {
         return category;
     }
 
-    public boolean insertMenuData(Category category) {
+    public boolean insertCategoryData(Category category) {
         PreparedStatement psCategory = null;
         try {
             psCategory = connection.prepareStatement(CategoryQuery.INSERT_CATEGORY_DATA);
@@ -77,7 +77,7 @@ public class CategoryService {
         return false;
     }
 
-    public boolean updateMenuData(Category category) {
+    public boolean updateCategoryData(Category category) {
         PreparedStatement psCategory = null;
         try {
 
@@ -101,7 +101,7 @@ public class CategoryService {
         return false;
     }
 
-    public boolean deleteMenuData(String cID) {
+    public boolean deleteCategoryData(String cID) {
         PreparedStatement psCategory = null;
         try {
 
@@ -119,7 +119,7 @@ public class CategoryService {
 
     public SortedList<Category> searchTable(TextField searchTextField) {
         //Retreiving all data from database
-        ObservableList<Category> menuData = loadAllMenuData();
+        ObservableList<Category> menuData = loadAllCategoryData();
         //Wrap the ObservableList in a filtered List (initially display all data)
         FilteredList<Category> filteredData = new FilteredList<>(menuData, b -> true);
 

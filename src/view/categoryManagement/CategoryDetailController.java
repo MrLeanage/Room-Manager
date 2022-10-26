@@ -124,7 +124,7 @@ public class CategoryDetailController implements Initializable {
 
     private void loadData() {
         CategoryService categoryService = new CategoryService();
-        ObservableList<Category> menuObservableList = categoryService.loadAllMenuData();
+        ObservableList<Category> menuObservableList = categoryService.loadAllCategoryData();
 
         IDColumn.setCellValueFactory(new PropertyValueFactory<>("cID"));
         imageColumn.setCellValueFactory(new PropertyValueFactory<>("cImage"));
@@ -203,7 +203,7 @@ public class CategoryDetailController implements Initializable {
             category.setcImage(categoryImageView);
 
 
-            if (categoryService.insertMenuData(category)) {
+            if (categoryService.insertCategoryData(category)) {
                 AlertPopUp.insertSuccesfully("Category");
                 loadData();
                 searchTable();
@@ -232,7 +232,7 @@ public class CategoryDetailController implements Initializable {
             category.setcAvailability(availabilityChoiceBox.getValue());
             category.setcImage(categoryImageView);
 
-            if (categoryService.updateMenuData(category)) {
+            if (categoryService.updateCategoryData(category)) {
                 AlertPopUp.updateSuccesfully("Category");
                 loadData();
                 searchTable();
@@ -249,7 +249,7 @@ public class CategoryDetailController implements Initializable {
             CategoryService categoryService = new CategoryService();
             Optional<ButtonType> action = AlertPopUp.deleteConfirmation("Category");
             if (action.get() == ButtonType.OK) {
-                if (categoryService.deleteMenuData((selectedCategory.getcID()))) {
+                if (categoryService.deleteCategoryData((selectedCategory.getcID()))) {
                     AlertPopUp.deleteSuccesfull("Category");
                     loadData();
                     searchTable();

@@ -41,7 +41,7 @@
                   <Font name="Calibri Bold" size="23.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="68.0" layoutY="89.0" prefHeight="112.0" prefWidth="320.0" text="ZINAMON &#10;RED KANDY" textAlignment="CENTER" textFill="#ea0909">
+            <Label alignment="CENTER" layoutX="68.0" layoutY="89.0" prefHeight="112.0" prefWidth="320.0" text="HOTEL&#10;HILLTOP" textAlignment="CENTER" textFill="#ea0909">
                <font>
                   <Font name="Calisto MT Bold" size="43.0" />
                </font>

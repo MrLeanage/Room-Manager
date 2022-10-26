@@ -33,7 +33,7 @@
                 <MenuItem mnemonicParsing="false" onAction="#logoutAccount" text="LOGOUT           " />
               </items>
             </MenuButton>
-            <Label layoutX="32.0" layoutY="31.0" prefHeight="89.0" prefWidth="686.0" text="ZINAMON RED KANDY" textFill="WHITE" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="282.0">
+            <Label layoutX="32.0" layoutY="31.0" prefHeight="89.0" prefWidth="686.0" text="HOTEL HILTOP" textFill="WHITE" AnchorPane.leftAnchor="32.0" AnchorPane.rightAnchor="282.0">
                <font>
                   <Font name="Calisto MT Bold" size="49.0" />
                </font>
