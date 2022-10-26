@@ -68,6 +68,9 @@ public class RoomDetailController implements Initializable {
     @FXML
     private JFXButton updateButton;
 
+    @FXML
+    private Label reservationStatusLabel;
+
     private Room selectedRoom = null;
 
     private static final String defaultRoomStatus = "Not Reserved";
@@ -79,6 +82,7 @@ public class RoomDetailController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         rReservationStatusTextField.setVisible(false);
+        reservationStatusLabel.setVisible(false);
 
         availabilityChoiceBoxList = FXCollections.observableArrayList("Available", "Not Available");
         rAvailabilityChoiceBox.setValue("Available");
@@ -217,6 +221,7 @@ public class RoomDetailController implements Initializable {
             rReservationStatusTextField.setVisible(true);
             addButton.setVisible(false);
             updateButton.setVisible(true);
+            reservationStatusLabel.setVisible(true);
 
             selectedRoom = roomTable.getSelectionModel().getSelectedItem();
             rCategoryComboBox.setValue(selectedRoom.getrCategory());
@@ -232,6 +237,7 @@ public class RoomDetailController implements Initializable {
     void clearFields(ActionEvent event) {
 
         rReservationStatusTextField.setVisible(false);
+        reservationStatusLabel.setVisible(false);
         addButton.setVisible(true);
         updateButton.setVisible(false);
 

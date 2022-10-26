@@ -38,7 +38,7 @@
       <ComboBox fx:id="rCategoryComboBox" layoutX="142.0" layoutY="386.0" prefHeight="25.0" prefWidth="200.0" AnchorPane.topAnchor="386.0" />
       <Label layoutX="359.0" layoutY="386.0" prefHeight="41.0" prefWidth="160.0" text="Room Identification&#10;Number :" AnchorPane.topAnchor="386.0" />
       <Label layoutX="29.0" layoutY="446.0" text="Room Availability &#10;Status :" AnchorPane.topAnchor="446.0" />
-      <Label layoutX="359.0" layoutY="446.0" prefHeight="34.0" prefWidth="160.0" text="Room Reservation &#10;Status :" AnchorPane.topAnchor="446.0" />
+      <Label fx:id="reservationStatusLabel" layoutX="359.0" layoutY="446.0" prefHeight="34.0" prefWidth="160.0" text="Room Reservation &#10;Status :" AnchorPane.topAnchor="446.0" />
       <TextField fx:id="rReservationStatusTextField" editable="false" layoutX="520.0" layoutY="446.0" prefHeight="25.0" prefWidth="200.0" AnchorPane.topAnchor="446.0" />
       <Label fx:id="identificationNoValidationLabel" layoutX="361.0" layoutY="421.0" prefHeight="17.0" prefWidth="361.0" textFill="RED" AnchorPane.topAnchor="421.0" />
       <ChoiceBox fx:id="rAvailabilityChoiceBox" layoutX="142.0" layoutY="451.0" prefHeight="25.0" prefWidth="200.0" />
