@@ -24,24 +24,24 @@
       </Label>
       <TableView fx:id="roomTable" layoutX="40.0" layoutY="105.0" onMouseClicked="#setSelectedRoomDataToFields" prefHeight="243.0" prefWidth="690.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="105.0">
          <columns>
-            <TableColumn fx:id="rIdentificationColumn" prefWidth="106.0" text="Room Number" />
+            <TableColumn fx:id="rIdentificationColumn" prefWidth="106.0" text="Room &#10;Number" />
             <TableColumn fx:id="rCategoryIDColumn" minWidth="28.0" prefWidth="96.0" text="Category ID" />
             <TableColumn fx:id="rNameColumn" prefWidth="221.0" text="Category Name" />
             <TableColumn fx:id="rAvailabilityStatusColumn" prefWidth="136.0" text="Availability Status" />
-            <TableColumn fx:id="rReservationStatusColumn" prefWidth="130.0" text="Reservation Status" />
+            <TableColumn fx:id="rReservationStatusColumn" prefWidth="125.0" text="Reservation &#10;Status" />
          </columns>
       </TableView>
       <TextField fx:id="searchTextField" layoutX="40.0" layoutY="75.0" prefHeight="25.0" prefWidth="690.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="75.0" />
       <FontAwesomeIconView fill="#573e00" glyphName="SEARCH" layoutX="712.0" layoutY="92.0" AnchorPane.leftAnchor="702.0" />
-      <Label layoutX="29.0" layoutY="386.0" prefHeight="17.0" prefWidth="103.0" text="Room Category :" AnchorPane.topAnchor="386.0" />
-      <TextField fx:id="rIdentificationTextField" layoutX="520.0" layoutY="386.0" prefHeight="25.0" prefWidth="200.0" AnchorPane.topAnchor="386.0" />
-      <ComboBox fx:id="rCategoryComboBox" layoutX="142.0" layoutY="386.0" prefHeight="25.0" prefWidth="200.0" AnchorPane.topAnchor="386.0" />
+      <Label layoutX="29.0" layoutY="386.0" prefHeight="21.0" prefWidth="120.0" text="Room Category :" AnchorPane.topAnchor="386.0" />
+      <TextField fx:id="rIdentificationTextField" layoutX="520.0" layoutY="386.0" onKeyReleased="#checkUserRoomNumberAvailability" prefHeight="25.0" prefWidth="200.0" AnchorPane.topAnchor="386.0" />
+      <ComboBox fx:id="rCategoryComboBox" layoutX="150.0" layoutY="386.0" prefHeight="25.0" prefWidth="200.0" AnchorPane.topAnchor="386.0" />
       <Label layoutX="359.0" layoutY="386.0" prefHeight="41.0" prefWidth="160.0" text="Room Identification&#10;Number :" AnchorPane.topAnchor="386.0" />
       <Label layoutX="29.0" layoutY="446.0" text="Room Availability &#10;Status :" AnchorPane.topAnchor="446.0" />
-      <Label fx:id="reservationStatusLabel" layoutX="359.0" layoutY="446.0" prefHeight="34.0" prefWidth="160.0" text="Room Reservation &#10;Status :" AnchorPane.topAnchor="446.0" />
+      <Label fx:id="reservationStatusLabel" layoutX="359.0" layoutY="446.0" prefHeight="42.0" prefWidth="160.0" text="Room Reservation &#10;Status :" AnchorPane.topAnchor="446.0" />
       <TextField fx:id="rReservationStatusTextField" editable="false" layoutX="520.0" layoutY="446.0" prefHeight="25.0" prefWidth="200.0" AnchorPane.topAnchor="446.0" />
       <Label fx:id="identificationNoValidationLabel" layoutX="361.0" layoutY="421.0" prefHeight="17.0" prefWidth="361.0" textFill="RED" AnchorPane.topAnchor="421.0" />
-      <ChoiceBox fx:id="rAvailabilityChoiceBox" layoutX="142.0" layoutY="451.0" prefHeight="25.0" prefWidth="200.0" />
+      <ChoiceBox fx:id="rAvailabilityChoiceBox" layoutX="150.0" layoutY="451.0" prefHeight="25.0" prefWidth="200.0" />
       <HBox alignment="CENTER_RIGHT" layoutX="512.0" layoutY="495.0" prefHeight="34.0" prefWidth="223.0">
          <children>
             <JFXButton onAction="#deleteRoom" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #a70000;" text="DELETE" textFill="WHITE">

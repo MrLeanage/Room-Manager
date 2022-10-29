@@ -63,17 +63,6 @@
                         <FontAwesomeIconView fill="WHITE" glyphName="SQUARE" />
                      </graphic>
                   </JFXButton>
-                  <JFXButton fx:id="bookButton" alignment="CENTER" onAction="#loadRoomBookDetail" onMousePressed="#setSelection" prefHeight="50.0" prefWidth="230.0" style="-fx-border-color: #ffffff; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #6f0101;" styleClass="JFXButton" text="ROOM BOOK MANAGEMENT" textFill="WHITE">
-                     <font>
-                        <Font name="Calibri Bold" size="15.0" />
-                     </font>
-                     <graphic>
-                        <FontAwesomeIconView fill="WHITE" glyphName="SQUARE" />
-                     </graphic>
-                     <VBox.margin>
-                        <Insets bottom="5.0" top="5.0" />
-                     </VBox.margin>
-                  </JFXButton>
                   <JFXButton fx:id="categoryButton" alignment="CENTER" onAction="#loadCategoryDetail" onMousePressed="#setSelection" prefHeight="50.0" prefWidth="230.0" style="-fx-border-color: #ffffff; -fx-border-radius: 5; -fx-border-width: 1; -fx-background-color: #6f0101;" styleClass="JFXButton" text="CATEGORY MANAGEMENT" textFill="WHITE">
                      <font>
                         <Font name="Calibri Bold" size="15.0" />

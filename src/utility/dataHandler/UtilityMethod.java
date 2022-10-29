@@ -7,6 +7,8 @@ import javafx.scene.image.ImageView;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.lang.reflect.Array;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class UtilityMethod {
@@ -60,5 +62,18 @@ public class UtilityMethod {
 
     public static boolean checkDataAvailability(ArrayList<String> list, String value){
         return list.contains(value);
+    }
+    public static ArrayList<String> getDaysBetweenGivenTwoDays(String startDate, String endDate){
+        /*String s = "2014-05-01";
+        String e = "2014-05-10";*/
+        LocalDate start = LocalDate.parse(startDate);
+        LocalDate end = LocalDate.parse(endDate);
+        ArrayList<String> totalDates = new ArrayList<>();
+        while (!start.isAfter(end)) {
+            totalDates.add(String.valueOf(start));
+            start = start.plusDays(1);
+        }
+
+        return totalDates;
     }
 }

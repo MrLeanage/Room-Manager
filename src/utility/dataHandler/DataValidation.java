@@ -2,6 +2,9 @@ package utility.dataHandler;
 
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
+import javafx.util.Callback;
+
+import java.time.LocalDate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -171,6 +174,54 @@ public class DataValidation {
     }
     public static void isValidNIC(TextField textField, Label label, String validationText){
         if(!(isValidNIC(textField))){
+            label.setText(validationText);
+        }
+    }
+
+    public static Callback hideFutureDates() {
+        Callback<DatePicker, DateCell> callB = new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(final DatePicker param) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
+                        LocalDate today = LocalDate.now();
+                        setDisable(empty || item.compareTo(today) > 0);
+                    }
+
+                };
+            }
+
+        };
+        return callB;
+    }
+
+    public static Callback hideOldDates() {
+        Callback<DatePicker, DateCell> callB = new Callback<DatePicker, DateCell>() {
+            @Override
+            public DateCell call(final DatePicker param) {
+                return new DateCell() {
+                    @Override
+                    public void updateItem(LocalDate item, boolean empty) {
+                        super.updateItem(item, empty); //To change body of generated methods, choose Tools | Templates.
+                        LocalDate today = LocalDate.now();
+                        setDisable(empty || item.compareTo(today) < 0);
+                    }
+
+                };
+            }
+
+        };
+        return callB;
+    }
+
+    public static boolean DatePickerNotEmpty(DatePicker date) {
+        return !(date.getValue() == null || date.getValue().toString().isEmpty());
+    }
+
+    public static void DatePickerNotEmpty(DatePicker date, Label label, String validationText) {
+        if (!DatePickerNotEmpty(date)) {
             label.setText(validationText);
         }
     }

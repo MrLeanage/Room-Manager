@@ -16,9 +16,11 @@ import javafx.scene.layout.AnchorPane;
 import service.CategoryService;
 import service.RoomService;
 import utility.dataHandler.DataValidation;
+import utility.dataHandler.UtilityMethod;
 import utility.popUp.AlertPopUp;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -73,9 +75,13 @@ public class RoomDetailController implements Initializable {
 
     private Room selectedRoom = null;
 
-    private static final String defaultRoomStatus = "Not Reserved";
+    private static final String defaultRoomStatus = "NOT RESERVED";
 
-    private static final String reservedRoomStatus = "Reserved";
+    private static final String reservedRoomStatus = "RESERVED";
+
+    private boolean inputRoomIdentificationExistence = false;
+
+    private boolean onUpdate = false;
 
     private ObservableList<String> availabilityChoiceBoxList = FXCollections.observableArrayList();
     private ObservableList<Category> categoryObservableList = FXCollections.observableArrayList();
@@ -125,9 +131,8 @@ public class RoomDetailController implements Initializable {
 
     @FXML
     void addRoom(ActionEvent event) {
-
         clearLabels();
-        if (roomValidation()) {
+        if (roomValidation() && !inputRoomIdentificationExistence) {
             Room room = new Room();
             RoomService roomService = new RoomService();
 
@@ -222,6 +227,7 @@ public class RoomDetailController implements Initializable {
             addButton.setVisible(false);
             updateButton.setVisible(true);
             reservationStatusLabel.setVisible(true);
+            onUpdate = true;
 
             selectedRoom = roomTable.getSelectionModel().getSelectedItem();
             rCategoryComboBox.setValue(selectedRoom.getrCategory());
@@ -240,6 +246,7 @@ public class RoomDetailController implements Initializable {
         reservationStatusLabel.setVisible(false);
         addButton.setVisible(true);
         updateButton.setVisible(false);
+        onUpdate = false;
 
         rCategoryComboBox.setValue(categoryObservableList.get(0));
         rAvailabilityChoiceBox.setValue(availabilityChoiceBoxList.get(0));
@@ -266,4 +273,33 @@ public class RoomDetailController implements Initializable {
         DataValidation.isValidMaximumLength(rIdentificationTextField.getText(), 45, identificationNoValidationLabel, "Field Limit 45 Exceeded!");
     }
 
+    @FXML
+    private void checkUserRoomNumberAvailability() {
+
+        ObservableList<Room> modelList = roomTable.getItems();
+        ArrayList<String> roomIdentificationList = new ArrayList<>();
+        for (Room room : modelList) {
+            roomIdentificationList.add(room.getrIdentification().toLowerCase());
+        }
+        inputRoomIdentificationExistence = true;
+        if (rIdentificationTextField.getText().isEmpty()) {
+            identificationNoValidationLabel.setStyle("-fx-text-fill: #ff0000 ");
+            identificationNoValidationLabel.setText("Room Identification Cannot be empty");
+        } else if (UtilityMethod.checkDataAvailability(roomIdentificationList, rIdentificationTextField.getText().toLowerCase())) {
+            if(onUpdate){
+                if(!selectedRoom.getrIdentification().toLowerCase().equals(rIdentificationTextField.getText().toLowerCase())){
+                    identificationNoValidationLabel.setStyle("-fx-text-fill: #ff0000 ");
+                    identificationNoValidationLabel.setText("Room Identification Already Exist!!");
+                }
+            }else{
+                identificationNoValidationLabel.setStyle("-fx-text-fill: #ff0000 ");
+                identificationNoValidationLabel.setText("Room Identification Already Exist!!");
+            }
+
+        } else {
+            identificationNoValidationLabel.setStyle("-fx-text-fill: #00B605 ");
+            identificationNoValidationLabel.setText("Room Identification Available to use");
+            inputRoomIdentificationExistence = false;
+        }
+    }
 }

@@ -51,6 +51,7 @@ public class CategoryService {
             }
         } catch (SQLException sqlException) {
             AlertPopUp.sqlQueryError(sqlException);
+            System.out.println(sqlException);
         }
         return category;
     }

@@ -47,6 +47,116 @@ INSERT INTO `category` VALUES (004,_binary 'ÿ\Øÿ\à\0JFIF\0\0\0\0\0\0ÿ\Û\0C\
 UNLOCK TABLES;
 
 --
+-- Table structure for table `reservation_room_requests`
+--
+
+DROP TABLE IF EXISTS `reservation_room_requests`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reservation_room_requests` (
+  `resID` int NOT NULL,
+  `roomCategory` varchar(10) NOT NULL,
+  `noOfRooms` int DEFAULT NULL,
+  PRIMARY KEY (`resID`,`roomCategory`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reservation_room_requests`
+--
+
+LOCK TABLES `reservation_room_requests` WRITE;
+/*!40000 ALTER TABLE `reservation_room_requests` DISABLE KEYS */;
+/*!40000 ALTER TABLE `reservation_room_requests` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `reservations`
+--
+
+DROP TABLE IF EXISTS `reservations`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `reservations` (
+  `resID` int(5) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `resCusName` varchar(45) DEFAULT NULL,
+  `resCusEmail` varchar(45) DEFAULT NULL,
+  `resCusNIC` varchar(45) DEFAULT NULL,
+  `resCusAddress` varchar(400) DEFAULT NULL,
+  `resCusPhone` varchar(20) DEFAULT NULL,
+  `resReservedDate` varchar(45) DEFAULT NULL,
+  `resCheckInDate` varchar(45) DEFAULT NULL,
+  `resCheckOutDate` varchar(45) DEFAULT NULL,
+  `resStatus` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`resID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `reservations`
+--
+
+LOCK TABLES `reservations` WRITE;
+/*!40000 ALTER TABLE `reservations` DISABLE KEYS */;
+INSERT INTO `reservations` VALUES (00001,'D. B Jayaratne','db@yahoo.com','641245789V','102/12/A/1, Nawam mawatha, Colombo 02','0114477859','2022-10-28','2022-10-28','2022-10-29','RESERVED'),(00002,'P. D Jayaratne','pd@yahoo.com','647896456V','102/A/12, Nawam mawatha, Colombo','0114477852','2022-10-28','2022-10-28','2022-10-29','RESERVED');
+/*!40000 ALTER TABLE `reservations` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `room_bookings`
+--
+
+DROP TABLE IF EXISTS `room_bookings`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `room_bookings` (
+  `rID` int NOT NULL,
+  `roomNo` int NOT NULL,
+  `checkInDate` varchar(45) DEFAULT NULL,
+  `checkOutDate` varchar(45) DEFAULT NULL,
+  `bookingStatus` varchar(20) DEFAULT NULL,
+  PRIMARY KEY (`rID`,`roomNo`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `room_bookings`
+--
+
+LOCK TABLES `room_bookings` WRITE;
+/*!40000 ALTER TABLE `room_bookings` DISABLE KEYS */;
+INSERT INTO `room_bookings` VALUES (2,3,'2022-10-28','2022-10-29','RESERVED');
+/*!40000 ALTER TABLE `room_bookings` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `rooms`
+--
+
+DROP TABLE IF EXISTS `rooms`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `rooms` (
+  `rID` int(5) unsigned zerofill NOT NULL AUTO_INCREMENT,
+  `rCID` int NOT NULL,
+  `rIdentification` varchar(45) NOT NULL,
+  `rAvailabilityStatus` varchar(45) NOT NULL,
+  `rReservationStatus` varchar(45) NOT NULL,
+  PRIMARY KEY (`rID`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `rooms`
+--
+
+LOCK TABLES `rooms` WRITE;
+/*!40000 ALTER TABLE `rooms` DISABLE KEYS */;
+INSERT INTO `rooms` VALUES (00001,4,'1001','Not Available','Not Reserved'),(00003,4,'1002','Available','Not Reserved'),(00004,5,'1003','Available','Not Reserved'),(00005,5,'1004','Available','Not Reserved'),(00006,4,'2001','Available','Not Reserved'),(00007,4,'2002','Available','Not Reserved'),(00008,5,'2003','Available','Not Reserved');
+/*!40000 ALTER TABLE `rooms` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `user`
 --
 
@@ -68,7 +178,7 @@ CREATE TABLE `user` (
 
 LOCK TABLES `user` WRITE;
 /*!40000 ALTER TABLE `user` DISABLE KEYS */;
-INSERT INTO `user` VALUES ('ud@gmail.com','Uthpala','Liyanage','202cb962ac59075b964b07152d234b70'),('ud@yahoo.com','Dulshan','Liyanage','202cb962ac59075b964b07152d234b70');
+INSERT INTO `user` VALUES ('ud@gmail.com','Uthpala','Rajitha','202cb962ac59075b964b07152d234b70'),('ud@yahoo.com','Dulshan','Liyanage','202cb962ac59075b964b07152d234b70');
 /*!40000 ALTER TABLE `user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -89,4 +199,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-10-13 22:28:42
+-- Dump completed on 2022-10-28 22:20:54

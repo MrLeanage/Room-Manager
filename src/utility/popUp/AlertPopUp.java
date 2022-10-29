@@ -143,4 +143,13 @@ public class AlertPopUp {
         Optional<ButtonType> action = alert.showAndWait();
         return action;
     }
+
+    public static Optional<ButtonType> removeConfirmation(String text) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm Your Request to Remove");
+        alert.setHeaderText(null);
+        alert.setContentText("Do you want to Remove selected " + text + "??...");
+        Optional<ButtonType> action = alert.showAndWait();
+        return action;
+    }
 }

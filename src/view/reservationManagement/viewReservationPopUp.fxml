@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="620.0" prefWidth="760.0" style="-fx-background-color: #a70000;" stylesheets="@../../lib/css/system.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="view.reservationManagement.ViewReservationPopUpController">
+   <children>
+      <AnchorPane fx:id="detailAnchorPane" layoutX="10.0" layoutY="10.0" prefHeight="550.0" prefWidth="750.0" AnchorPane.bottomAnchor="5.0" AnchorPane.leftAnchor="5.0" AnchorPane.rightAnchor="5.0" AnchorPane.topAnchor="65.0">
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="540.0" layoutX="65.0" layoutY="58.0" stroke="#573e00" strokeType="INSIDE" strokeWidth="3.0" width="740.0" AnchorPane.leftAnchor="5.0" AnchorPane.topAnchor="5.0" />
+            <TableView fx:id="reservationRoomTable" layoutX="324.0" layoutY="84.0" prefHeight="388.0" prefWidth="690.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0">
+               <columns>
+                  <TableColumn fx:id="cartCategoryNameColumn" prefWidth="419.0" text="Room Category" />
+                  <TableColumn fx:id="roomNoColumn" prefWidth="147.0" text="Room  No" />
+                  <TableColumn fx:id="statusColumn" prefWidth="122.0" text="Booking Status" />
+               </columns>
+            </TableView>
+            <Label fx:id="datePickerValidationLabel" layoutX="33.0" layoutY="94.0" prefHeight="21.0" prefWidth="263.0" textFill="RED" AnchorPane.leftAnchor="30.0" />
+            <TextField fx:id="searchTableTextField" layoutX="30.0" layoutY="49.0" prefHeight="31.0" prefWidth="690.0" />
+            <FontAwesomeIconView glyphName="SEARCH" layoutX="699.0" layoutY="68.0" />
+            <JFXButton layoutX="620.0" layoutY="490.0" onAction="#closeStage" prefHeight="30.0" prefWidth="100.0" style="-fx-background-color: #6f0101;" text="CLOSE" textFill="WHITE">
+               <font>
+                  <Font name="Calibri Bold" size="13.0" />
+               </font>
+            </JFXButton>
+            <Label fx:id="customerInfoLabel" layoutX="30.0" layoutY="15.0" prefHeight="28.0" prefWidth="690.0" text="Customer Info">
+               <font>
+                  <Font name="Calibri Bold" size="18.0" />
+               </font>
+            </Label>
+         </children>
+      </AnchorPane>
+      <Label layoutX="27.0" layoutY="24.0" text="RESERVATION MANAGEMENT" textFill="WHITE" AnchorPane.leftAnchor="27.0" AnchorPane.topAnchor="24.0">
+         <font>
+            <Font name="Calibri Bold" size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="pageTitleLabel" layoutX="337.0" layoutY="24.0" text="- VIEW RESERVED ROOMS" textFill="WHITE">
+         <font>
+            <Font name="Calibri Bold" size="24.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

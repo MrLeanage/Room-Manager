@@ -25,9 +25,6 @@ public class AppStageController implements Initializable {
     private JFXButton reservationButton;
 
     @FXML
-    private JFXButton bookButton;
-
-    @FXML
     private JFXButton categoryButton;
 
     @FXML
@@ -93,14 +90,12 @@ public class AppStageController implements Initializable {
             MenuBarHandler.setMenuNumber(0);
         else if (reservationButton.isPressed())
             MenuBarHandler.setMenuNumber(1);
-        else if (bookButton.isPressed())
-            MenuBarHandler.setMenuNumber(2);
         else if (categoryButton.isPressed())
-            MenuBarHandler.setMenuNumber(3);
+            MenuBarHandler.setMenuNumber(2);
         else if (roomButton.isPressed())
-            MenuBarHandler.setMenuNumber(4);
+            MenuBarHandler.setMenuNumber(3);
         else if (userButton.isPressed())
-            MenuBarHandler.setMenuNumber(5);
+            MenuBarHandler.setMenuNumber(4);
         else
             MenuBarHandler.setMenuNumber(0);
         setStyle();
@@ -117,15 +112,12 @@ public class AppStageController implements Initializable {
                 reservationButton.setStyle(selectionColor);
                 break;
             case 2:
-                bookButton.setStyle(selectionColor);
-                break;
-            case 3:
                 categoryButton.setStyle(selectionColor);
                 break;
-            case 4:
+            case 3:
                 roomButton.setStyle(selectionColor);
                 break;
-            case 5:
+            case 4:
                 userButton.setStyle(selectionColor);
                 break;
             default:
@@ -138,7 +130,6 @@ public class AppStageController implements Initializable {
         String defaultColor = "-fx-background-color:   #6f0101; ";
         homeButton.setStyle(defaultColor);
         reservationButton.setStyle(defaultColor);
-        bookButton.setStyle(defaultColor);
         categoryButton.setStyle(defaultColor);
         roomButton.setStyle(defaultColor);
         userButton.setStyle(defaultColor);

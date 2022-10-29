@@ -10,6 +10,7 @@ public class Room {
     private String rIdentification = null;
     private String rAvailabilityStatus = null;
     private String rReservationStatus = null;
+    private String rReservedDate = null;
 
     public Room(String rID, Category rCategory, String rIdentification, String rAvailabilityStatus, String rReservationStatus) {
         this.rID = UtilityMethod.addPrefix("R-", rID);
@@ -25,6 +26,10 @@ public class Room {
 
     public String getrID() {
         return rID;
+    }
+
+    public int getIntRID() {
+        return UtilityMethod.seperateID(rID);
     }
 
     public StringProperty rIDProperty(){
@@ -53,6 +58,10 @@ public class Room {
 
     public StringProperty rCnameProperty(){
         return rCategory.cNameProperty();
+    }
+
+    public StringProperty rCnameWithRoomTypeProperty(){
+        return new SimpleStringProperty(rCategory.getcName() + " (" + rCategory.getcRoomType() + ")" );
     }
 
     public String getrIdentification() {
@@ -89,5 +98,13 @@ public class Room {
 
     public void setrReservationStatus(String rReservationStatus) {
         this.rReservationStatus = rReservationStatus;
+    }
+
+    public String getrReservedDate() {
+        return rReservedDate;
+    }
+
+    public void setrReservedDate(String rReservedDate) {
+        this.rReservedDate = rReservedDate;
     }
 }

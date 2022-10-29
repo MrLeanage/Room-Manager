@@ -31,6 +31,31 @@ public class RoomService {
             while (resultSet.next()) {
                 CategoryService categoryService = new CategoryService();
                 Category category = categoryService.loadSpecificCategory(UtilityMethod.addPrefix("C", resultSet.getString(2)));
+
+                ReservationService reservationService = new ReservationService();
+                String reservationStatus = "NOT RESERVED";
+                if(reservationService.isSpecificRoomReserved(resultSet.getString(1)))
+                    reservationStatus = "RESERVED";
+
+                roomObservableList.add(new Room(resultSet.getString(1), category, resultSet.getString(3), resultSet.getString(4), reservationStatus));
+            }
+
+        } catch (SQLException sqlException) {
+            AlertPopUp.sqlQueryError(sqlException);
+        }
+        return roomObservableList;
+    }
+
+    public ObservableList<Room> loadAllRoomDataByAvailableStatus(String availabilityStatus) {
+        ObservableList<Room> roomObservableList = FXCollections.observableArrayList();
+        try {
+            PreparedStatement preparedStatement = connection.prepareStatement(RoomQuery.LOAD_ALL_ROOM_DATA_BY_AVAILABILITY);
+            preparedStatement.setString(1, availabilityStatus);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                CategoryService categoryService = new CategoryService();
+                Category category = categoryService.loadSpecificCategory(UtilityMethod.addPrefix("C", resultSet.getString(2)));
                 roomObservableList.add(new Room(resultSet.getString(1), category, resultSet.getString(3), resultSet.getString(4), resultSet.getString(5)));
             }
 
@@ -48,11 +73,14 @@ public class RoomService {
             ResultSet resultSet = preparedStatement.executeQuery();
             while (resultSet.next()) {
                 CategoryService categoryService = new CategoryService();
-                Category category = categoryService.loadSpecificCategory(resultSet.getString(2));
+                Category category = categoryService.loadSpecificCategory(UtilityMethod.addPrefix("C", resultSet.getString(2)));
                 room = new Room(resultSet.getString(1), category, resultSet.getString(3), resultSet.getString(4), resultSet.getString(5));
             }
-        } catch (SQLException sqlException) {
+        } catch (Exception sqlException) {
+            sqlException.printStackTrace();
+            sqlException.printStackTrace();
             AlertPopUp.sqlQueryError(sqlException);
+
         }
         return room;
     }
