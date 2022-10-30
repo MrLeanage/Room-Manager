@@ -5,6 +5,7 @@ import bean.Room;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,11 +20,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
 import service.ReservationService;
+import utility.dataHandler.DataValidation;
+import utility.dataHandler.PrintReport;
 import utility.popUp.AlertPopUp;
 
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
@@ -91,20 +96,38 @@ public class ReservationDetailController implements Initializable {
     @FXML
     private ChoiceBox<String> statusChoiceBox;
 
+    @FXML
+    private AnchorPane reportAnchorPane;
+
+    @FXML
+    private DatePicker reportCheckInDatePicker;
+
+    @FXML
+    private DatePicker reportCheckOutDatePicker;
+
+    @FXML
+    private ChoiceBox<String> reportStatusChoiceBox;
+
+
     private static Reservation selectedReservation = null;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadData();
+        clearFields();
     }
 
     private void loadData(){
         ReservationService reservationService = new ReservationService();
         ObservableList<Reservation> reservationObservableList = reservationService.getAllReservationData();
+        ArrayList<String> reservationStatusArrayList = new ArrayList<>();
+        Collections.addAll(reservationStatusArrayList, "RESERVED", "CHECKED-IN", "CHECKED-OUT", "DISCARDED");
+        statusChoiceBox.setItems(FXCollections.observableArrayList(reservationStatusArrayList));
+        statusChoiceBox.setValue(reservationStatusArrayList.get(0));
 
-        ObservableList<String> reservationStatusList = FXCollections.observableArrayList("RESERVED", "CHECKED-IN", "CHECKED-OUT", "DISCARDED");
-        statusChoiceBox.setItems(reservationStatusList);
-        statusChoiceBox.setValue(reservationStatusList.get(0));
+        Collections.addAll(reservationStatusArrayList, "ALL");
+        reportStatusChoiceBox.setItems(FXCollections.observableArrayList(reservationStatusArrayList));
+        reportStatusChoiceBox.setValue(reservationStatusArrayList.get(0));
 
         rIdentificationColumn.setCellValueFactory(new PropertyValueFactory<>("resID"));
         rNameColumn.setCellValueFactory(new PropertyValueFactory<>("resCustomerName"));
@@ -155,6 +178,20 @@ public class ReservationDetailController implements Initializable {
 
         reservationTable.setItems(null);
         reservationTable.setItems(reservationObservableList);
+        searchRoomTable(reservationObservableList);
+    }
+
+    private void searchRoomTable(ObservableList<Reservation> roomObservableList){
+
+
+        ReservationService reservationService = new ReservationService();
+
+        SortedList<Reservation> sortedData = reservationService.searchReservationTable(searchTextField, roomObservableList);
+
+        //binding the SortedList to TableView
+        sortedData.comparatorProperty().bind(reservationTable.comparatorProperty());
+        //adding sorted and filtered data to the table
+        reservationTable.setItems(sortedData);
     }
 
     @FXML
@@ -163,8 +200,10 @@ public class ReservationDetailController implements Initializable {
     }
 
     private void clearFields(){
+        updateButton.setVisible(false);
         checkInDatePicker.setEditable(true);
         checkOutDatePicker.setEditable(true);
+        reportAnchorPane.setVisible(true);
 
         reservationNoTextField.clear();
         nameTextField.clear();
@@ -180,7 +219,7 @@ public class ReservationDetailController implements Initializable {
     @FXML
     private void setSelectedReservationDataToFields(MouseEvent event) {
         try{
-
+            updateButton.setVisible(true);
             checkInDatePicker.setEditable(false);
             checkInDatePicker.setOnMouseClicked(e -> {
                 if(!checkInDatePicker.isEditable())
@@ -269,6 +308,26 @@ public class ReservationDetailController implements Initializable {
 
     public static Reservation getSelectedReservation(){
         return selectedReservation;
+    }
+
+    @FXML
+    private void printReservationList(ActionEvent event){
+        if(DataValidation.DatePickerNotEmpty(reportCheckInDatePicker) && DataValidation.DatePickerNotEmpty(reportCheckOutDatePicker)){
+            if(!reportCheckInDatePicker.getValue().isAfter(reportCheckOutDatePicker.getValue())){
+                ReservationService reservationService = new ReservationService();
+                ObservableList<Reservation> reservationObservableList = reservationService.getCustomReservationData(reportCheckInDatePicker.getValue(), reportCheckOutDatePicker.getValue(), reportStatusChoiceBox.getValue());
+                if(!reservationObservableList.isEmpty()){
+                    PrintReport printReport = new PrintReport();
+                    printReport.printReservationList(reservationObservableList, reportCheckInDatePicker.getValue().toString() + " To " + reportCheckOutDatePicker.getValue().toString(), reportStatusChoiceBox.getValue());
+                }else
+                    AlertPopUp.customErrorPopup("No Records Found!", "No Reservation Records found for your Given Criteria, Please change your sorting criteria and try again!");
+            }else
+                AlertPopUp.customErrorPopup("Validation Error", "Please Enter a Check Out which available date after the Check In Date");
+
+        }else{
+            AlertPopUp.customErrorPopup("Fields Cannot be empty", "Check In and Check out Dates cannot be empty, Please select Check In and Checkout Dates");
+        }
+
     }
 
 

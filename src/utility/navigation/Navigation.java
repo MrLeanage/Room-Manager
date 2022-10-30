@@ -51,6 +51,7 @@ public class Navigation {
             baseAnchorPane.getChildren().setAll(pane);
         } catch (IOException ex) {
             AlertPopUp.generalError(ex);
+            ex.printStackTrace();
         }
     }
 

@@ -1,12 +1,17 @@
 package bean;
 
 import javafx.beans.property.*;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utility.dataHandler.UtilityMethod;
 
+import java.io.InputStream;
+
 public class Category {
     private String cID = null;
-    private ImageView cImage = null;
+    private ImageView cImageView = null;
+    private Image cImage = null;
+    private InputStream cImageInputStream = null;
     private String cName = null;
     private String cBedArrangement = null;
     private String cRoomSize = null;
@@ -18,9 +23,11 @@ public class Category {
     public Category() {
     }
 
-    public Category(String cID, ImageView cImage, String cName, String cBedArrangement, String cRoomSize, String cRoomType, String cInfo, Double cPrice, String cAvailability) {
+    public Category(String cID, ImageView cImageView, String cName, String cBedArrangement, String cRoomSize, String cRoomType, String cInfo, Double cPrice, String cAvailability) {
         this.cID = UtilityMethod.addPrefix("C", cID);
-        this.cImage = cImage;
+        this.cImageView = cImageView;
+        this.cImage = cImageView.getImage();
+        this.cImageInputStream = UtilityMethod.convertImageToInputStream(cImageView);
         this.cName = cName;
         this.cBedArrangement = cBedArrangement;
         this.cRoomSize = cRoomSize;
@@ -47,16 +54,17 @@ public class Category {
         this.cID = cID;
     }
 
-    public ImageView getcImage() {
-        return cImage;
+    public ImageView getcImageView() {
+        return cImageView;
     }
 
-    public ObjectProperty<ImageView> cImageProperty() {
-        return new SimpleObjectProperty<>(cImage);
+    public ObjectProperty<ImageView> cImageViewProperty() {
+        return new SimpleObjectProperty<>(cImageView);
     }
 
-    public void setcImage(ImageView cImage) {
-        this.cImage = cImage;
+    public void setcImageView(ImageView cImageView) {
+        this.cImageView = cImageView;
+        this.cImage = cImageView.getImage();
     }
 
     public String getcName() {
@@ -141,5 +149,21 @@ public class Category {
 
     public void setcAvailability(String cAvailability) {
         this.cAvailability = cAvailability;
+    }
+
+    public Image getcImage() {
+        return cImage;
+    }
+
+    public void setcImage(Image cImage) {
+        this.cImage = cImage;
+    }
+
+    public InputStream getcImageInputStream() {
+        return cImageInputStream;
+    }
+
+    public void setcImageInputStream(InputStream cImageInputStream) {
+        this.cImageInputStream = cImageInputStream;
     }
 }

@@ -2,6 +2,7 @@ package utility.query;
 
 public class ReservationQuery {
     public static final String LOAD_ALL_RESERVATION_BOOKINGS = "SELECT * FROM reservations";
+    public static final String LOAD_ALL_RESERVATION_BOOKINGS_BY_STATUS = "SELECT * FROM reservations WHERE resStatus = ?";
     public static final String LOAD_SPECIFIC_ALL_RESERVATION_BOOKINGS = "SELECT * FROM room_bookings WHERE rID = ?";
     public static final String LOAD_RESERVED_BOOKINGS = "SELECT * FROM room_bookings WHERE bookingStatus = 'RESERVED'";
     public static final String LOAD_SPECIFIC_RESERVATION_BOOKINGS = "SELECT * FROM room_bookings WHERE rID = ?";

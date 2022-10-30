@@ -16,11 +16,13 @@ import javafx.scene.layout.AnchorPane;
 import service.CategoryService;
 import service.RoomService;
 import utility.dataHandler.DataValidation;
+import utility.dataHandler.PrintReport;
 import utility.dataHandler.UtilityMethod;
 import utility.popUp.AlertPopUp;
 
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -73,6 +75,15 @@ public class RoomDetailController implements Initializable {
     @FXML
     private Label reservationStatusLabel;
 
+    @FXML
+    private ComboBox<Category> printCategoryComboBox;
+
+    @FXML
+    private ChoiceBox<String> printAvailabilityChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> printReservationStatusChoiceBox;
+
     private Room selectedRoom = null;
 
     private static final String defaultRoomStatus = "NOT RESERVED";
@@ -83,22 +94,42 @@ public class RoomDetailController implements Initializable {
 
     private boolean onUpdate = false;
 
-    private ObservableList<String> availabilityChoiceBoxList = FXCollections.observableArrayList();
-    private ObservableList<Category> categoryObservableList = FXCollections.observableArrayList();
+    private ArrayList<String> availabilityChoiceBoxList = new ArrayList<>();
+    private ArrayList<Category> printCategoryList = new ArrayList<>();
+    private ObservableList<String> reservationStatusObservableList = FXCollections.observableArrayList();
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         rReservationStatusTextField.setVisible(false);
         reservationStatusLabel.setVisible(false);
 
-        availabilityChoiceBoxList = FXCollections.observableArrayList("Available", "Not Available");
+        Collections.addAll(availabilityChoiceBoxList, "Available", "Not Available");
         rAvailabilityChoiceBox.setValue("Available");
-        rAvailabilityChoiceBox.setItems(availabilityChoiceBoxList);
+        rAvailabilityChoiceBox.setItems(FXCollections.observableArrayList(availabilityChoiceBoxList));
+
+        Collections.addAll(availabilityChoiceBoxList, "ALL ROOMS");
+        printAvailabilityChoiceBox.setItems(FXCollections.observableArrayList(availabilityChoiceBoxList));
+        printAvailabilityChoiceBox.setValue("Available");
+
+        reservationStatusObservableList.addAll(defaultRoomStatus, reservedRoomStatus, "ALL");
+        printReservationStatusChoiceBox.setItems(reservationStatusObservableList);
+        printReservationStatusChoiceBox.setValue(reservationStatusObservableList.get(0));
+
+
+        Category category = new Category();
+        category.setcName("ALL CATEGORIES");
+        category.setcID("C000");
+
 
         CategoryService categoryService = new CategoryService();
-        categoryObservableList = categoryService.loadAllCategoryData();
+        printCategoryList.addAll(categoryService.loadAllCategoryData());
 
-        rCategoryComboBox.setItems(categoryObservableList);
-        rCategoryComboBox.setValue(categoryObservableList.get(0));
+        rCategoryComboBox.setItems(FXCollections.observableArrayList(printCategoryList));
+        rCategoryComboBox.setValue(printCategoryList.get(0));
+
+
+        Collections.addAll(printCategoryList, category);
+        printCategoryComboBox.setValue(printCategoryList.get(0));
+        printCategoryComboBox.setItems(FXCollections.observableArrayList(printCategoryList));
 
         loadData();
     }
@@ -248,7 +279,7 @@ public class RoomDetailController implements Initializable {
         updateButton.setVisible(false);
         onUpdate = false;
 
-        rCategoryComboBox.setValue(categoryObservableList.get(0));
+        rCategoryComboBox.setValue(printCategoryList.get(0));
         rAvailabilityChoiceBox.setValue(availabilityChoiceBoxList.get(0));
         rIdentificationTextField.clear();
         rReservationStatusTextField.clear();
@@ -301,5 +332,21 @@ public class RoomDetailController implements Initializable {
             identificationNoValidationLabel.setText("Room Identification Available to use");
             inputRoomIdentificationExistence = false;
         }
+    }
+
+    @FXML
+    private void printRoomReport(ActionEvent actionEvent){
+        RoomService roomService = new RoomService();
+        System.out.println(printCategoryComboBox.getValue().getcID());
+        ObservableList<Room> roomObservableList = roomService.loadAllCustomRoomData(UtilityMethod.seperateID(printCategoryComboBox.getValue().getcID()), printAvailabilityChoiceBox.getValue(), printReservationStatusChoiceBox.getValue());
+
+        if(!roomObservableList.isEmpty()){
+            PrintReport printReport = new PrintReport();
+            printReport.printRoomList(roomObservableList, printCategoryComboBox.getValue().getcName(), printAvailabilityChoiceBox.getValue(), printReservationStatusChoiceBox.getValue());
+        }else
+            AlertPopUp.customErrorPopup("No Records Found", "No Records found for your given sorting Criteria, Please Change your sorting criteria and try again!!");
+
+
+
     }
 }

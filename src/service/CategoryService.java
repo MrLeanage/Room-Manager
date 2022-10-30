@@ -39,6 +39,38 @@ public class CategoryService {
         return categoryObservableList;
     }
 
+    public ObservableList<Category> loadCustomCategoryData(String categoryType, String categoryAvailability) {
+        ObservableList<Category> categoryObservableList = FXCollections.observableArrayList();
+        try {
+            ResultSet resultSet = null;
+            if(categoryType.toLowerCase().contains("ALL".toLowerCase()) && categoryAvailability.toLowerCase().contains("ALL".toLowerCase())){
+                resultSet = connection.createStatement().executeQuery(CategoryQuery.LOAD_ALL_CATEGORY_DATA);
+            }else if(!categoryType.toLowerCase().contains("ALL".toLowerCase()) && categoryAvailability.toLowerCase().contains("ALL".toLowerCase())){
+                PreparedStatement preparedStatement = connection.prepareStatement(CategoryQuery.LOAD_ALL_CATEGORY_DATA_BY_ROOM_TYPE);
+                preparedStatement.setString(1, categoryType);
+                resultSet = preparedStatement.executeQuery();
+            }else if(categoryType.toLowerCase().contains("ALL".toLowerCase()) && !categoryAvailability.toLowerCase().contains("ALL".toLowerCase())){
+                PreparedStatement preparedStatement = connection.prepareStatement(CategoryQuery.LOAD_ALL_CATEGORY_DATA_BY_AVAILABILITY);
+                preparedStatement.setString(1, categoryAvailability);
+                resultSet = preparedStatement.executeQuery();
+            }else {
+                PreparedStatement preparedStatement = connection.prepareStatement(CategoryQuery.LOAD_ALL_CATEGORY_DATA_BY_ROOM_TYPE_AND_AVAILABILITY);
+                preparedStatement.setString(1, categoryType);
+                preparedStatement.setString(2, categoryAvailability);
+                resultSet = preparedStatement.executeQuery();
+            }
+
+            while (resultSet.next()) {
+                InputStream inputStream = resultSet.getBinaryStream(2);
+                categoryObservableList.add(new Category(resultSet.getString(1), UtilityMethod.convertInputStreamToImage(inputStream), resultSet.getString(3), resultSet.getString(4), resultSet.getString(5), resultSet.getString(6),  resultSet.getString(7), resultSet.getDouble(8), resultSet.getString(9)));
+            }
+
+        } catch (SQLException sqlException) {
+            AlertPopUp.sqlQueryError(sqlException);
+        }
+        return categoryObservableList;
+    }
+
     public Category loadSpecificCategory(String cID) {
         Category category = null;
         try {
@@ -61,7 +93,7 @@ public class CategoryService {
         try {
             psCategory = connection.prepareStatement(CategoryQuery.INSERT_CATEGORY_DATA);
 
-            psCategory.setBinaryStream(1, UtilityMethod.convertImageToInputStream(category.getcImage()));
+            psCategory.setBinaryStream(1, UtilityMethod.convertImageToInputStream(category.getcImageView()));
             psCategory.setString(2, category.getcName());
             psCategory.setString(3, category.getcBedArrangement());
             psCategory.setString(4, category.getcRoomSize());
@@ -84,7 +116,7 @@ public class CategoryService {
 
             psCategory = connection.prepareStatement(CategoryQuery.UPDATE_CATEGORY_DATA);
 
-            psCategory.setBinaryStream(1, UtilityMethod.convertImageToInputStream(category.getcImage()));
+            psCategory.setBinaryStream(1, UtilityMethod.convertImageToInputStream(category.getcImageView()));
             psCategory.setString(2, category.getcName());
             psCategory.setString(3, category.getcBedArrangement());
             psCategory.setString(4, category.getcRoomSize());

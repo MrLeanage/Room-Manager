@@ -18,6 +18,7 @@ public class Reservation {
     private String resStatus = null;
     private ArrayList<Room> reservedRoomList = null;
 
+    private String resCheckInOutDate = null;
     public Reservation() {
     }
 
@@ -33,6 +34,8 @@ public class Reservation {
         this.resCheckOutDate = resCheckOutDate;
         this.resStatus = resStatus;
         this.reservedRoomList = reservedRoomList;
+
+        this.resCheckInOutDate = resCheckInDate + " - " + resCheckOutDate;
     }
 
     //Property Methods
@@ -145,4 +148,14 @@ public class Reservation {
     }
 
 
+    public String getResCheckInOutDate() {
+        if(resCheckInOutDate == null)
+            return resCheckInOutDate;
+        else
+            return resCheckInDate + " - " + resCheckOutDate;
+    }
+
+    public void setResCheckInOutDate(String resCheckInOutDate) {
+        this.resCheckInOutDate = resCheckInOutDate;
+    }
 }

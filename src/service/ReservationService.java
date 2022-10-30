@@ -20,8 +20,12 @@ import utility.query.RoomQuery;
 
 import java.io.InputStream;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.Observable;
 import java.util.function.Predicate;
 
@@ -54,12 +58,58 @@ public class ReservationService {
         return reservationObservableList;
     }
     /**
+     * Get All reservation Data
+     */
+    public ObservableList<Reservation> getCustomReservationData(LocalDate checkInStartDate, LocalDate checkOutEndDate, String reservationStatus){
+        ObservableList<Reservation> reservationObservableList = FXCollections.observableArrayList();
+        try {
+            ResultSet reservationResultSet = null;
+            if(reservationStatus.toLowerCase().equals("all")){
+                reservationResultSet = connection.createStatement().executeQuery(ReservationQuery.LOAD_ALL_RESERVATION_BOOKINGS);
+            }else{
+                PreparedStatement reservationPreparedStatement = connection.prepareStatement(ReservationQuery.LOAD_ALL_RESERVATION_BOOKINGS_BY_STATUS);
+                reservationPreparedStatement.setString(1, reservationStatus);
+                reservationResultSet = reservationPreparedStatement.executeQuery();
+            }
+
+            while (reservationResultSet.next()) {
+                LocalDate reservationCheckInDate = LocalDate.parse(reservationResultSet.getString(7));
+                LocalDate reservationCheckOutDate = LocalDate.parse(reservationResultSet.getString(8));
+
+
+                if(!checkInStartDate.isAfter(reservationCheckInDate) && !checkOutEndDate.isBefore(reservationCheckOutDate)){
+                    reservationObservableList.add(new Reservation(reservationResultSet.getString(1), reservationResultSet.getString(2),
+                            reservationResultSet.getString(3),reservationResultSet.getString(4),
+                            reservationResultSet.getString(5),reservationResultSet.getString(6),
+                            reservationResultSet.getString(7),reservationResultSet.getString(8),
+                            reservationResultSet.getString(9),reservationResultSet.getString(10), getSpecificReservedRoomList(reservationResultSet.getString(1))));
+                }
+            }
+
+        } catch (SQLException sqlException) {
+            AlertPopUp.sqlQueryError(sqlException);
+            System.out.println(sqlException);
+        }
+        return reservationObservableList;
+    }
+    /**
      * Get Available Rooms for given Start and end Date
      * @param startDate startDate
      * @param endDate endDate
      * @return availableRoomList
      */
     public ObservableList<Room> getAvailableRoomsForCategories(String startDate, String endDate) {
+        /**
+         * ############ PLAN
+         * 1. Get All Room Data where room is available to use
+         * 2. Create a new Room list for the all room data by adding getting all dates between check in and out Dates, Mark them as RESERVED
+         * 3. Get all currently reserved Bookings
+         * 4. Creating reserved room list for all reserved Dates of Reserved Bookings
+         * 5. Creating Available room list if a particular room not reserved
+         * 6. Sorting available room list by removing room duplicates
+         * 7. Return Room List
+         */
+
         /**
          * Creating a room list for given dates
          */
@@ -145,9 +195,9 @@ public class ReservationService {
 //            }
 //        }
 //
-//        /**
-//         * Sorting available room list by removing room duplicates
-//         */
+        /**
+         * Sorting available room list by removing room duplicates
+         */
         ArrayList<Room> filteredList = new ArrayList<>();
         ArrayList<String> roomIDs = new ArrayList<>();
 
@@ -231,6 +281,52 @@ public class ReservationService {
         }
         return false;
     }
+    /**
+     * search All Reservations in Table
+     * @param searchTextField searchTextField
+     * @param reservationObservableList reservationObservableList
+     * @return sortedData
+     */
+    public SortedList<Reservation> searchReservationTable(TextField searchTextField, ObservableList<Reservation> reservationObservableList) {
+
+        //Wrap the ObservableList in a filtered List (initially display all data)
+        FilteredList<Reservation> filteredData = new FilteredList<>(reservationObservableList, b -> true);
+
+        searchTextField.textProperty().addListener((observable, oldValue, newValue) -> {
+            filteredData.setPredicate(room -> {
+                //if filter text is empty display all data
+                if (newValue == null || newValue.isEmpty()) {
+                    return true;
+                }
+                //comparing search text with table columns one by one
+                String lowerCaseFilter = newValue.toLowerCase();
+
+                if (room.getResID().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    //return if filter matches data
+                    return true;
+                } else if (room.getResCustomerName().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    //return if filter matches data
+                    return true;
+                } else if (room.getResCustomerPhone().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    //return if filter matches data
+                    return true;
+                }else if (room.getResCustomerNIC().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    //return if filter matches data
+                    return true;
+                }else if (room.getResStatus().toLowerCase().indexOf(lowerCaseFilter) != -1) {
+                    //return if filter matches data
+                    return true;
+                }else {
+                    //have no matching
+                    return false;
+                }
+            });
+        });
+        //wrapping the FilteredList in a SortedList
+        SortedList<Reservation> sortedData = new SortedList<>(filteredData);
+        return sortedData;
+    }
+
     /**
      * search available Rooms in Table
      * @param searchTextField searchTextField

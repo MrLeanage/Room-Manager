@@ -7,6 +7,7 @@ import utility.dataHandler.UtilityMethod;
 public class Room {
     private String rID = null;
     private Category rCategory = null;
+    private String rCategoryName = null;
     private String rIdentification = null;
     private String rAvailabilityStatus = null;
     private String rReservationStatus = null;
@@ -15,6 +16,7 @@ public class Room {
     public Room(String rID, Category rCategory, String rIdentification, String rAvailabilityStatus, String rReservationStatus) {
         this.rID = UtilityMethod.addPrefix("R-", rID);
         this.rCategory = rCategory;
+        this.rCategoryName = rCategory.getcName() + " (" + rCategory.getcRoomType() + ")";
         this.rIdentification = rIdentification;
         this.rAvailabilityStatus = rAvailabilityStatus;
         this.rReservationStatus = rReservationStatus;
@@ -46,6 +48,15 @@ public class Room {
 
     public void setrCategory(Category rCategory) {
         this.rCategory = rCategory;
+        this.rCategoryName = rCategory.getcName() + " (" + rCategory.getcRoomType() + ")";
+    }
+
+    public String getrCategoryName() {
+        return rCategoryName;
+    }
+
+    public void setrCategoryName(String rCategoryName) {
+        this.rCategoryName = rCategoryName;
     }
 
     public String getrCID() {

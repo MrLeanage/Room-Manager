@@ -31,12 +31,12 @@ public class AppLoginController{
 
     @FXML
     void login(ActionEvent event) {
-        if (!fieldValidation()) {
+        if (fieldValidation()) {
             String authenticateMessage = UserAuthentication.authenticateUser(emailTextField.getText(), passwordTextField.getText());
 
-            if (!authenticateMessage.equals("true")){
-                Navigation navigationn = new Navigation();
-                navigationn.loadAppStage(baseAnchorPane);
+            if (authenticateMessage.equals("true")){
+                Navigation navigation = new Navigation();
+                navigation.loadAppStage(baseAnchorPane);
             }else
                 validationLabel.setText(authenticateMessage);
         } else

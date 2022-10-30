@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import service.ReservationService;
+import utility.dataHandler.PrintReport;
 
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -45,7 +46,7 @@ public class ViewReservationPopUpController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadTableData();
-        customerInfoLabel.setText("Reservation ID : " + selectedReservation.getResID() + " : " + selectedReservation.getResCustomerName());
+        customerInfoLabel.setText("Reservation ID : " + selectedReservation.getResID() + " - " + selectedReservation.getResCustomerName());
     }
 
     @FXML
@@ -84,6 +85,11 @@ public class ViewReservationPopUpController implements Initializable {
         reservationRoomTable.setItems(sortedData);
     }
 
+    @FXML
+    private void printReservation(ActionEvent actionEvent){
+        PrintReport printReport = new PrintReport();
+        printReport.printReservation(selectedReservation);
+    }
 
 
 }

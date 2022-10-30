@@ -18,11 +18,14 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.FileChooser;
 import service.CategoryService;
 import utility.dataHandler.DataValidation;
+import utility.dataHandler.PrintReport;
 import utility.popUp.AlertPopUp;
 
 import java.io.File;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -104,19 +107,38 @@ public class CategoryDetailController implements Initializable {
 
     @FXML
     private ChoiceBox<String> roomTypeChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> printAvailabilityChoiceBox;
+
+    @FXML
+    private ChoiceBox<String> printRoomTypeChoiceBox;
+
     private static File staticFile;
 
     private static Category selectedCategory;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        ObservableList<String> availabilityChoiceBoxList = FXCollections.observableArrayList("Available", "Not Available");
-        availabilityChoiceBox.setValue("Available");
-        availabilityChoiceBox.setItems(availabilityChoiceBoxList);
+        ArrayList<String> availabilityChoiceBoxArrayList = new ArrayList<>();
+        Collections.addAll(availabilityChoiceBoxArrayList, "Available", "Not Available");
 
-        ObservableList<String> typeChoiceBoxList = FXCollections.observableArrayList("A/C SMOKE", "A/C NON SMOKE", "NON A/C SMOKE", "NON A/C NON SMOKE");
-        roomTypeChoiceBox.setValue(typeChoiceBoxList.get(1));
-        roomTypeChoiceBox.setItems(typeChoiceBoxList);
+        availabilityChoiceBox.setValue(availabilityChoiceBoxArrayList.get(0));
+        availabilityChoiceBox.setItems(FXCollections.observableArrayList(availabilityChoiceBoxArrayList));
+
+        Collections.addAll(availabilityChoiceBoxArrayList, "ALL");
+        printAvailabilityChoiceBox.setValue(availabilityChoiceBoxArrayList.get(0));
+        printAvailabilityChoiceBox.setItems(FXCollections.observableArrayList(availabilityChoiceBoxArrayList));
+
+        ArrayList<String> categoryTypeChoiceBoxArrayList = new ArrayList<>();
+        Collections.addAll(categoryTypeChoiceBoxArrayList, "A/C SMOKE", "A/C NON SMOKE", "NON A/C SMOKE", "NON A/C NON SMOKE");
+        roomTypeChoiceBox.setValue(categoryTypeChoiceBoxArrayList.get(1));
+        roomTypeChoiceBox.setItems(FXCollections.observableArrayList(categoryTypeChoiceBoxArrayList));
+
+        Collections.addAll(categoryTypeChoiceBoxArrayList, "ALL CATEGORIES");
+        printRoomTypeChoiceBox.setValue(categoryTypeChoiceBoxArrayList.get(0));
+        printRoomTypeChoiceBox.setItems(FXCollections.observableArrayList(categoryTypeChoiceBoxArrayList));
+
 
         loadData();
 
@@ -127,7 +149,7 @@ public class CategoryDetailController implements Initializable {
         ObservableList<Category> menuObservableList = categoryService.loadAllCategoryData();
 
         IDColumn.setCellValueFactory(new PropertyValueFactory<>("cID"));
-        imageColumn.setCellValueFactory(new PropertyValueFactory<>("cImage"));
+        imageColumn.setCellValueFactory(new PropertyValueFactory<>("cImageView"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("cName"));
         bedArrangementColumn.setCellValueFactory(new PropertyValueFactory<>("cBedArrangement"));
         typeColumn.setCellValueFactory(new PropertyValueFactory<>("cRoomType"));
@@ -200,7 +222,7 @@ public class CategoryDetailController implements Initializable {
             category.setcInfo(infoTextArea.getText());
             category.setcPrice(Double.valueOf(priceTextField.getText()));
             category.setcAvailability(availabilityChoiceBox.getValue());
-            category.setcImage(categoryImageView);
+            category.setcImageView(categoryImageView);
 
 
             if (categoryService.insertCategoryData(category)) {
@@ -230,7 +252,7 @@ public class CategoryDetailController implements Initializable {
             category.setcInfo(infoTextArea.getText());
             category.setcPrice(Double.valueOf(priceTextField.getText()));
             category.setcAvailability(availabilityChoiceBox.getValue());
-            category.setcImage(categoryImageView);
+            category.setcImageView(categoryImageView);
 
             if (categoryService.updateCategoryData(category)) {
                 AlertPopUp.updateSuccesfully("Category");
@@ -278,7 +300,7 @@ public class CategoryDetailController implements Initializable {
             infoTextArea.setText(selectedCategory.getcInfo());
             priceTextField.setText(selectedCategory.getcPrice().toString());
             availabilityChoiceBox.setValue(selectedCategory.getcAvailability());
-            categoryImageView.setImage(selectedCategory.getcImage().getImage());
+            categoryImageView.setImage(selectedCategory.getcImageView().getImage());
         } catch (NullPointerException exception) {
 
         }
@@ -370,5 +392,18 @@ public class CategoryDetailController implements Initializable {
             Image image = new Image(file.toURI().toString());
             categoryImageView.setImage(image);
         }
+    }
+
+    @FXML
+    private void printRoomCategoryReport(ActionEvent actionEvent){
+        CategoryService categoryService = new CategoryService();
+        ObservableList<Category> categoryObservableList = categoryService.loadCustomCategoryData(printRoomTypeChoiceBox.getValue(), printAvailabilityChoiceBox.getValue());
+        if(!categoryObservableList.isEmpty()){
+            PrintReport printReport = new PrintReport();
+            printReport.printCategoryList(categoryObservableList, printRoomTypeChoiceBox.getValue(), printAvailabilityChoiceBox.getValue());
+        }else
+            AlertPopUp.customErrorPopup("No Records Found", "No Records found for your given sorting Criteria, Please Change your sorting criteria and try again!!");
+
+
     }
 }

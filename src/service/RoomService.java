@@ -46,6 +46,47 @@ public class RoomService {
         return roomObservableList;
     }
 
+    public ObservableList<Room> loadAllCustomRoomData(int roomCategory, String roomAvailability, String reservationStatus) {
+        ObservableList<Room> roomObservableList = FXCollections.observableArrayList();
+        try {
+            ResultSet resultSet = null;
+            if(roomAvailability.toLowerCase().contains("ALL".toLowerCase())){
+                resultSet = connection.createStatement().executeQuery(RoomQuery.LOAD_ALL_ROOM_DATA);
+            }else {
+                PreparedStatement preparedStatement = connection.prepareStatement(RoomQuery.LOAD_ALL_ROOM_DATA_BY_AVAILABILITY);
+                preparedStatement.setString(1, roomAvailability);
+                resultSet = preparedStatement.executeQuery();
+            }
+
+            while (resultSet.next()) {
+                CategoryService categoryService = new CategoryService();
+                Category category = categoryService.loadSpecificCategory(UtilityMethod.addPrefix("C", resultSet.getString(2)));
+
+                ReservationService reservationService = new ReservationService();
+                String itemReservationStatus = "NOT RESERVED";
+                if(reservationService.isSpecificRoomReserved(resultSet.getString(1)))
+                    itemReservationStatus = "RESERVED";
+
+                if(reservationStatus.toLowerCase().contains("ALL".toLowerCase()) && roomCategory == 0){
+                    roomObservableList.add(new Room(resultSet.getString(1), category, resultSet.getString(3), resultSet.getString(4), itemReservationStatus));
+                }else if(!reservationStatus.toLowerCase().contains("ALL".toLowerCase()) && roomCategory == 0){
+                    if(reservationStatus.equals(itemReservationStatus))
+                        roomObservableList.add(new Room(resultSet.getString(1), category, resultSet.getString(3), resultSet.getString(4), itemReservationStatus));
+                }else if(reservationStatus.toLowerCase().contains("ALL".toLowerCase()) && roomCategory != 0){
+                    if(roomCategory == UtilityMethod.seperateID(category.getcID()))
+                        roomObservableList.add(new Room(resultSet.getString(1), category, resultSet.getString(3), resultSet.getString(4), itemReservationStatus));
+                }else{
+                    if(reservationStatus.equals(itemReservationStatus) && roomCategory == UtilityMethod.seperateID(category.getcID()))
+                        roomObservableList.add(new Room(resultSet.getString(1), category, resultSet.getString(3), resultSet.getString(4), itemReservationStatus));
+                }
+            }
+
+        } catch (SQLException sqlException) {
+            AlertPopUp.sqlQueryError(sqlException);
+        }
+        return roomObservableList;
+    }
+
     public ObservableList<Room> loadAllRoomDataByAvailableStatus(String availabilityStatus) {
         ObservableList<Room> roomObservableList = FXCollections.observableArrayList();
         try {
