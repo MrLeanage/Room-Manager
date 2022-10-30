@@ -5,6 +5,7 @@ import bean.Room;
 import com.jfoenix.controls.JFXButton;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.collections.transformation.SortedList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -155,6 +156,20 @@ public class ReservationDetailController implements Initializable {
 
         reservationTable.setItems(null);
         reservationTable.setItems(reservationObservableList);
+        searchRoomTable(reservationObservableList);
+    }
+
+    private void searchRoomTable(ObservableList<Reservation> roomObservableList){
+
+
+        ReservationService reservationService = new ReservationService();
+
+        SortedList<Reservation> sortedData = reservationService.searchReservationTable(searchTextField, roomObservableList);
+
+        //binding the SortedList to TableView
+        sortedData.comparatorProperty().bind(reservationTable.comparatorProperty());
+        //adding sorted and filtered data to the table
+        reservationTable.setItems(sortedData);
     }
 
     @FXML

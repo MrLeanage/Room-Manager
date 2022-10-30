@@ -45,7 +45,7 @@ public class ViewReservationPopUpController implements Initializable {
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         loadTableData();
-        customerInfoLabel.setText("Reservation ID : " + selectedReservation.getResID() + " : " + selectedReservation.getResCustomerName());
+        customerInfoLabel.setText("Reservation ID : " + selectedReservation.getResID() + " - " + selectedReservation.getResCustomerName());
     }
 
     @FXML
